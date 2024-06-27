@@ -2,76 +2,22 @@ package com.multimodule.ProService;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.multimodule.customExceptionWithinModule.ResourceNotFoundException;
 import com.multimodule.product.Product;
-import com.multimodule.productRepo.ProductRepo;
 
-@Service
-public class ProductService {
+public interface ProductService {
+//	 creating object and store in database
+	public Product saveProduct(Product product);
 
-	@Autowired
-	ProductRepo repo;
+	// get ById
+	public List<Product> getProduct(int id);
 
-	public Product saveProduct(Product product) {
-
-		return repo.save(product);
-	}
-	
-	
-	
-	// get ById 
-	public List<Product> getProduct(int id ) {
-		
-		List<Product> product = repo.findByCustomerId(id);
-		if(product==null) {
-			throw new ResourceNotFoundException("Something went wrong please check it again !");
-		}else {
-			
-			return  product;
-		}
-	}
-	
-	
 	// update product
 
-	public Product updateProduct(Product product) {
+	public Product updateProduct(Product product);
 
-		Product product2 = repo.findById(product.getId()).orElseThrow(()-> new ResourceNotFoundException("Id Not Found Please Chack Again !"));
-		if (product2 != null) {
-			product2.setName(product.getName());
-			product2.setType(product.getType());
-
-			repo.save(product2);
-
-		}
-		return product2;
-
-	}
-	
 	// delete by id
-	public Boolean deleteProduct(int id) {
-		
-		Product product2 = repo.findById(id ).orElseThrow(()-> new ResourceNotFoundException("Id Not Found Please Chack Again !"));
-		if (product2 != null) {
+	public Boolean deleteProduct(int id);
 
-			repo.delete(product2);
-			
-			return true; 
-		}
-		return false;
-		
-	}
-	
-	
-	
-	// getting all product from database 
-	public List<Product> getAllProduct(){
-		
-		return repo.findAll();
-	}
-	
-	
+	// getting all product from database
+	public List<Product> getAllProduct();
 }

@@ -1,6 +1,5 @@
 package com.multimodule.CustService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,20 +8,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.multimodule.CustServiceInterface.CustomerService;
 import com.multimodule.customExceptionWithinModule.ResourceNotFoundException;
 import com.multimodule.customer.Customer;
 import com.multimodule.customerRepo.CustomerRepo;
 import com.multimodule.product.Product;
 
 @Service
-public class CustomerService {
+public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
-	CustomerRepo repo;
+	final CustomerRepo repo;
 
 	@Autowired
 	RestTemplate restTemplate;
 
+	public CustomerServiceImpl(CustomerRepo repo) {
+		this.repo = repo;
+	}
+
+	@Override
 	public Customer saveCustDetails(Customer customer) {
 
 		if (customer.getProduct() != null) {
@@ -36,38 +41,37 @@ public class CustomerService {
 				}
 			}
 
-		} 
+		}
 
 		return repo.save(customer);
 
-
 	}
 
-	// find by id 
+	// find by id
+	@Override
 	public Customer getCustomer(int id) {
-		
-		Customer customer = repo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Something went wrong please check it again !"));
-		
-		
-		 Product[] forObject = restTemplate.getForObject("http://localhost:8080/product/get/"+customer.getId(), Product[].class);
+
+		Customer customer = repo.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Something went wrong please check it again !"));
+
+		Product[] forObject = restTemplate.getForObject("http://localhost:8080/product/get/" + customer.getId(),
+				Product[].class);
 
 		List<Product> asList = Arrays.asList(forObject);
-		
-		
+
 		for (Product product : asList) {
-			if(product.getCustomerId()==id) {
+			if (product.getCustomerId() == id) {
 				customer.setProduct(asList);
 			}
-			
+
 		}
-		
+
 		return customer;
-		
-		
+
 	}
 
 	// update customer
-
+	@Override
 	public Customer updateCustomer(Customer customer) {
 
 		Customer customer2 = repo.findById(customer.getId())
@@ -84,6 +88,7 @@ public class CustomerService {
 	}
 
 	// delete by id
+	@Override
 	public Boolean deleteProduct(int id) {
 
 		Customer product2 = repo.findById(id)
@@ -99,23 +104,20 @@ public class CustomerService {
 	}
 
 	// getting all customer from database
+	@Override
 	public List<Customer> getAllProduct() {
 		Product[] listPro = restTemplate.getForObject("http://localhost:8080/product/get", Product[].class);
 
 		List<Product> asList = Arrays.asList(listPro);
-		
+
 		System.out.println(listPro);
 
 		List<Customer> ls = repo.findAll();
-		
-		
-	
 
 		for (Customer customer : ls) {
-              
-            	  
-            	  customer.setProduct(asList);
-              
+
+			customer.setProduct(asList);
+
 		}
 
 		return ls;

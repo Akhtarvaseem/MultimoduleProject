@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.multimodule.CustService.CustomerService;
+import com.multimodule.CustService.CustomerServiceImpl;
 import com.multimodule.customer.Customer;
 
 @RestController
@@ -20,7 +20,7 @@ import com.multimodule.customer.Customer;
 public class CustomerController {
 
 	@Autowired
-	CustomerService service;
+	CustomerServiceImpl service;
 	
 	
 	@PostMapping("/save")

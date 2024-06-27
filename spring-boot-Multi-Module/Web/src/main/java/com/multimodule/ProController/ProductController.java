@@ -14,17 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.multimodule.ProService.ProductService;
+import com.multimodule.ProService.ProductServiceImpl;
 import com.multimodule.product.Product;
-
-import jakarta.ws.rs.GET;
 
 @RestController
 @RequestMapping("product")
 public class ProductController {
 	
 	@Autowired
-	ProductService service;
+	ProductServiceImpl service;
 
 	@PostMapping("/save")
 	public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
