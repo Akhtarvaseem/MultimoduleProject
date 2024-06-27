@@ -1,4 +1,4 @@
-package com.multimodule.ProService;
+package com.multimodule.ProServiceInterface;
 
 import java.util.List;
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.multimodule.ProServiceInterface.ProductService;
 import com.multimodule.customExceptionWithinModule.ResourceNotFoundException;
 import com.multimodule.product.Product;
 import com.multimodule.productRepo.ProductRepo;
